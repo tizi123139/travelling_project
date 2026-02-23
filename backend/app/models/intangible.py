@@ -1,10 +1,7 @@
 from app.db.base import Base
-<<<<<<< Updated upstream
-from sqlalchemy import Column, String, Text
-=======
+
 from sqlalchemy import Column, String, Text, Integer, Float, DateTime
 import datetime
->>>>>>> Stashed changes
 
 class Intangible(Base):
     __tablename__ = "intangible"
@@ -16,9 +13,6 @@ class Intangible(Base):
     feature = Column(String(200))
     history = Column(Text)
     experience = Column(String(500))
-<<<<<<< Updated upstream
-    shop = Column(String(200))
-=======
     shop = Column(String(200))
 
     category = Column(String(50))  # 类别（传统技艺/表演艺术/民俗活动等）
@@ -33,4 +27,3 @@ class Intangible(Base):
     experience_contact = Column(String(50))  # 体验联系方式
     experience_price = Column(Float, default=0.0)  # 体验价格
     created_at = Column(DateTime, default=datetime.datetime.now)  # 创建时间
->>>>>>> Stashed changes

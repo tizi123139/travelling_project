@@ -1,12 +1,6 @@
-<<<<<<< Updated upstream
-from fastapi import APIRouter, Depends, Query
-from sqlalchemy.orm import Session
-=======
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
-
 from app.dao.IntangibleDAO import IntangibleDAO
->>>>>>> Stashed changes
 from app.services.IntangibleService import IntangibleService
 from app.schemas.intangible import IntangibleListItem, IntangibleDetail
 from app.core.base_response import BaseResponse
@@ -31,9 +25,7 @@ def get_intangible_detail(
     db: Session = Depends(get_db)
 ):
     data = IntangibleService.get_intangible_detail(db, id)
-<<<<<<< Updated upstream
-    return BaseResponse(data=data)
-=======
+
     return BaseResponse(data=data)
 
 
@@ -59,4 +51,4 @@ def share_intangible(item_id: str, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(item)
     return BaseResponse(data={"shares": item.shares})
->>>>>>> Stashed changes
+

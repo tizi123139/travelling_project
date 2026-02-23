@@ -1,12 +1,7 @@
 from pydantic import BaseModel
 from typing import Any, Optional
 
-<<<<<<< Updated upstream
-class BaseResponse(BaseModel):
-    """所有接口的标准化响应模型"""
-    code: int = 200
-    message: str = "获取成功"
-=======
+
 # 定义业务状态码常量（避免硬编码）
 class ResponseCode:
     SUCCESS = 200          # 成功
@@ -19,7 +14,6 @@ class BaseResponse(BaseModel):
     """所有接口的标准化响应模型"""
     code: int = ResponseCode.SUCCESS
     message: str = "操作成功"
->>>>>>> Stashed changes
     data: Optional[Any] = None
 
     class Config:
