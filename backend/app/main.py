@@ -23,4 +23,18 @@ app.include_router(PhotoWallController.router, prefix="/api/photo", tags=["照�
 
 @app.get("/")
 def read_root():
+<<<<<<< Updated upstream
     return {"message": "Welcome to Zhiyin Trace API"}
+=======
+    return {"message": "Welcome to Zhiyin Trace API"}
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 开发环境临时用 *，生产环境要改成你的前端地址
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+>>>>>>> Stashed changes

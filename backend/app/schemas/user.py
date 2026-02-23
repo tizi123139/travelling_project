@@ -1,5 +1,10 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+<<<<<<< Updated upstream
+=======
+from typing import Optional, Union
+from datetime import datetime
+>>>>>>> Stashed changes
 
 # 注册时输入的格式
 class UserCreate(BaseModel):
@@ -25,4 +30,13 @@ class UserLogin(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+<<<<<<< Updated upstream
     username: str
+=======
+    username: str
+    expires_at: Optional[int] = None
+
+class TokenPayload(BaseModel):
+    sub: Union[int, str]
+    exp: datetime
+>>>>>>> Stashed changes
