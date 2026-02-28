@@ -33,6 +33,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   
-  # 如果有本地图片，取消下面的注释
-  # assets:
-  #   - assets/images/
+  assets:
+    - assets/images/homebackground.jpg

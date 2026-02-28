@@ -20,6 +20,7 @@ import 'pages/vip_recharge_page.dart';         // VIP充值页面
 import 'services/theme_service.dart';
 import 'services/language_service.dart';
 import 'services/user_service.dart';           // 用户服务
+import 'services/message_service.dart';        // 消息服务（关注/粉丝/私聊）
 
 void main() {
   // 确保 Flutter 绑定初始化
@@ -30,7 +31,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeService()),
         ChangeNotifierProvider(create: (_) => LanguageService()),
-        ChangeNotifierProvider(create: (_) => UserService()), // 添加用户服务
+        ChangeNotifierProvider(create: (_) => UserService()),
+        ChangeNotifierProvider(create: (_) => MessageService()), // 添加消息服务
       ],
       child: const MyApp(),
     ),

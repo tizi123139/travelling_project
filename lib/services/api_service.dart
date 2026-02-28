@@ -8,37 +8,47 @@ class ApiService {
   
   // ============ 1. 用户模块 ============
   // POST /api/users/register
+    // ============ 用户模块 - 临时返回模拟数据 ============
   static Future<Map<String, dynamic>> register({
     required String email,
     required String phone,
     required String password,
   }) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/users/register'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'email': email,
-        'phone': phone,
-        'password': password,
-      }),
-    );
-    return jsonDecode(response.body);
+    // 模拟网络延迟
+    await Future.delayed(const Duration(seconds: 1));
+    
+    // 返回模拟成功响应
+    return {
+      'code': 200,
+      'message': '注册成功',
+      'data': {
+        'userId': '12345',
+        'username': email.split('@')[0],
+      }
+    };
   }
 
-  // POST /api/users/login
   static Future<Map<String, dynamic>> login({
     required String account,
     required String password,
   }) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/users/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'account': account,
-        'password': password,
-      }),
-    );
-    return jsonDecode(response.body);
+    // 模拟网络延迟
+    await Future.delayed(const Duration(seconds: 1));
+    
+    // 模拟登录成功（任何账号密码都成功）
+    return {
+      'code': 200,
+      'message': '登录成功',
+      'data': {
+        'userId': '12345',
+        'username': account,
+        'token': 'fake_jwt_token_12345',
+        'nickname': '旅行达人',
+        'avatar': 'https://picsum.photos/200/200?random=101',
+        'level': 5,
+        'isVip': true,
+      }
+    };
   }
 
   // ============ 2. 行程规划 ============

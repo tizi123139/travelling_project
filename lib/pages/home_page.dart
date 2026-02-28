@@ -57,81 +57,107 @@ class _HomePageState extends State<HomePage> {
   }
 
   // ============ 1. 登录弹窗 ============
-  void _showLoginDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF2196F3), Color(0xFF1976D2)],
+  // ============ 登录弹窗 ============
+void _showLoginDialog() {
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF2196F3), Color(0xFF1976D2)],
+                ),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: const Icon(
+                Icons.travel_explore,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              '登录/注册',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '登录后体验更多功能',
+              style: TextStyle(color: Colors.grey),
+            ),
+            const SizedBox(height: 20),
+            
+            // ============ 修改为白底黑字按钮 ============
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/login').then((value) {
+                    if (value == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('登录成功！')),
+                      );
+                    }
+                  });
+                },
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black87,
+                  side: const BorderSide(color: Colors.grey, width: 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  borderRadius: BorderRadius.circular(15),
                 ),
-                child: const Icon(
-                  Icons.travel_explore,
-                  color: Colors.white,
-                  size: 30,
+                child: const Text(
+                  '登录/注册',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ),
-              const SizedBox(height: 16),
-              const Text(
-                '登录/注册',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                '登录后体验更多功能',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/login').then((value) {
-                      if (value == true) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('登录成功！')),
-                        );
-                      }
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2196F3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text('去登录'),
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextButton(
+            ),
+            const SizedBox(height: 10),
+            
+            // ============ 暂不登录按钮也改为白底黑字 ============
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: OutlinedButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('暂不登录'),
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black87,
+                  side: const BorderSide(color: Colors.grey, width: 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  '暂不登录',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
               ),
-            ],
-          ),
+            ),
+            // ==============================================
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   // ============ 2. 个人中心入口 ============
   void _navigateToProfile() {
@@ -604,47 +630,56 @@ void _showGeneratePlanDialog(Map<String, dynamic>? planData) {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF121212),
-                    Color(0xFF1E1E1E),
-                  ],
-                )
-              : const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFFF5F9FF),
-                    Color(0xFFE8F1FF),
-                  ],
-                ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(texts, isDark, screenWidth),
-                const SizedBox(height: 20),
-                _buildAICard(texts, isDark),
-                const SizedBox(height: 20),
-                _buildActionButtons(texts, isDark),
-                const SizedBox(height: 24),
-                _buildFunctionSection(texts, isDark),
-                const SizedBox(height: 20),
-                _buildCommunitySection(texts, isDark),
-                const SizedBox(height: 20),
-                _buildBottomSection(texts, isDark),
-              ],
-            ),
+  decoration: BoxDecoration(
+    // ============ 添加本地图片作为背景 ============
+    image: DecorationImage(
+      image: AssetImage('assets/images/homebackground.jpg'),
+      fit: BoxFit.cover,  // 覆盖整个屏幕
+      colorFilter: isDark 
+          ? ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken)  // 暗色模式下加深
+          : ColorFilter.mode(Colors.white.withOpacity(0.1), BlendMode.lighten), // 亮色模式下变亮
+    ),
+    // 保留原有的渐变作为叠加效果（可选）
+    gradient: isDark
+        ? LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.black.withOpacity(0.7),
+              Colors.black.withOpacity(0.5),
+            ],
+          )
+        : LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.white.withOpacity(0.3),
+              Colors.white.withOpacity(0.1),
+            ],
           ),
-        ),
+  ),
+  child: SafeArea(
+    child: SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(texts, isDark, screenWidth),
+          const SizedBox(height: 20),
+          _buildAICard(texts, isDark),
+          const SizedBox(height: 20),
+          _buildActionButtons(texts, isDark),
+          const SizedBox(height: 24),
+          _buildFunctionSection(texts, isDark),
+          const SizedBox(height: 20),
+          _buildCommunitySection(texts, isDark),
+          const SizedBox(height: 20),
+          _buildBottomSection(texts, isDark),
+        ],
       ),
+    ),
+  ),
+),
     );
   }
 

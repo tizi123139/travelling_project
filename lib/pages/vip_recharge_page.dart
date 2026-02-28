@@ -65,9 +65,9 @@ class _VipRechargePageState extends State<VipRechargePage> {
   ];
 
   final List<Map<String, dynamic>> _paymentMethods = [
-    {'id': 'wechat', 'name': '微信支付', 'icon': Icons.wechat, 'color': Color(0xFF07C160)},
-    {'id': 'alipay', 'name': '支付宝', 'icon': Icons.payment, 'color': Color(0xFF1677FF)},
-    {'id': 'card', 'name': '银行卡', 'icon': Icons.credit_card, 'color': Color(0xFFF44336)},
+    {'id': 'wechat', 'name': '微信支付', 'icon': Icons.wechat, 'color': const Color(0xFF07C160)},
+    {'id': 'alipay', 'name': '支付宝', 'icon': Icons.payment, 'color': const Color(0xFF1677FF)},
+    {'id': 'card', 'name': '银行卡', 'icon': Icons.credit_card, 'color': const Color(0xFFF44336)},
   ];
 
   @override
@@ -82,47 +82,61 @@ class _VipRechargePageState extends State<VipRechargePage> {
         elevation: 0,
       ),
       body: SingleChildScrollView(
+        // ============ 调整上下间距，减小padding ============
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(
           children: [
-            // 头部权益展示
+            // 头部权益展示 - 减小高度
             _buildHeader(isDark),
             
-            // 会员套餐
-            ..._packages.map((package) => _buildPackageCard(package, isDark)),
+            const SizedBox(height: 8),
             
-            const SizedBox(height: 16),
+            // 会员套餐 - 减小卡片间距
+            ..._packages.map((package) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              child: _buildPackageCard(package, isDark),
+            )),
+            
+            const SizedBox(height: 8),
             
             // 支付方式
-            _buildPaymentSection(isDark),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              child: _buildPaymentSection(isDark),
+            ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
             
             // 确认支付按钮
-            _buildPayButton(isDark),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: _buildPayButton(isDark),
+            ),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
           ],
         ),
       ),
     );
   }
 
+  // ============ 头部 - 减小高度和间距 ============
   Widget _buildHeader(bool isDark) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
         ),
         borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
         ),
       ),
-      child: Column(
+      child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.2),
               shape: BoxShape.circle,
@@ -130,32 +144,39 @@ class _VipRechargePageState extends State<VipRechargePage> {
             child: const Icon(
               Icons.workspace_premium,
               color: Colors.white,
-              size: 50,
+              size: 30,
             ),
           ),
-          const SizedBox(height: 16),
-          const Text(
-            '开通VIP会员',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '开通VIP会员',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                const Text(
+                  '享受更多专属权益',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _buildBenefitItem(Icons.hotel, '酒店折扣'),
+                    const SizedBox(width: 12),
+                    _buildBenefitItem(Icons.local_activity, '门票折扣'),
+                    const SizedBox(width: 12),
+                    _buildBenefitItem(Icons.support_agent, '专属客服'),
+                  ],
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            '享受更多专属权益，让旅程更精彩',
-            style: TextStyle(color: Colors.white70),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildBenefitItem(Icons.hotel, '酒店折扣'),
-              _buildBenefitItem(Icons.local_activity, '门票折扣'),
-              _buildBenefitItem(Icons.support_agent, '专属客服'),
-              _buildBenefitItem(Icons.map, '专属路线'),
-            ],
           ),
         ],
       ),
@@ -163,71 +184,56 @@ class _VipRechargePageState extends State<VipRechargePage> {
   }
 
   Widget _buildBenefitItem(IconData icon, String label) {
-    return Column(
+    return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: Colors.white, size: 20),
-        ),
-        const SizedBox(height: 4),
+        Icon(icon, color: Colors.white, size: 14),
+        const SizedBox(width: 2),
         Text(
           label,
-          style: const TextStyle(color: Colors.white70, fontSize: 12),
+          style: const TextStyle(color: Colors.white70, fontSize: 10),
         ),
       ],
     );
   }
 
+  // ============ 套餐卡片 - 减小内边距 ============
   Widget _buildPackageCard(VipPackage package, bool isDark) {
     final isSelected = _selectedPackage == package.id;
     
     return Container(
-      margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isSelected
               ? const Color(0xFFFFA500)
               : (isDark ? Colors.grey.shade800 : Colors.grey.shade200),
           width: isSelected ? 2 : 1,
         ),
-        boxShadow: isSelected
-            ? [
-                BoxShadow(
-                  color: const Color(0xFFFFA500).withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : null,
       ),
       child: Stack(
         children: [
           if (package.isPopular)
             Positioned(
-              top: 12,
-              right: 12,
+              top: 8,
+              right: 8,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
                   ),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Text(
-                  '热门推荐',
-                  style: TextStyle(color: Colors.white, fontSize: 10),
+                  '热门',
+                  style: TextStyle(color: Colors.white, fontSize: 9),
                 ),
               ),
             ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             child: Column(
               children: [
                 Row(
@@ -239,17 +245,17 @@ class _VipRechargePageState extends State<VipRechargePage> {
                           Text(
                             package.name,
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: isDark ? Colors.white : Colors.black87,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 2),
                           RichText(
                             text: TextSpan(
                               text: '¥${package.price}',
                               style: const TextStyle(
-                                fontSize: 24,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFFFA500),
                               ),
@@ -257,7 +263,7 @@ class _VipRechargePageState extends State<VipRechargePage> {
                                 TextSpan(
                                   text: ' 原价¥${package.originalPrice}',
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 11,
                                     fontWeight: FontWeight.normal,
                                     color: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
                                     decoration: TextDecoration.lineThrough,
@@ -278,20 +284,22 @@ class _VipRechargePageState extends State<VipRechargePage> {
                         });
                       },
                       activeColor: const Color(0xFFFFA500),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 ...package.benefits.map((benefit) => Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
+                  padding: const EdgeInsets.only(bottom: 2),
                   child: Row(
                     children: [
-                      const Icon(Icons.check_circle, color: Color(0xFFFFA500), size: 16),
-                      const SizedBox(width: 8),
+                      const Icon(Icons.check_circle, color: Color(0xFFFFA500), size: 14),
+                      const SizedBox(width: 6),
                       Expanded(
                         child: Text(
                           benefit,
                           style: TextStyle(
+                            fontSize: 12,
                             color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
                           ),
                         ),
@@ -307,13 +315,13 @@ class _VipRechargePageState extends State<VipRechargePage> {
     );
   }
 
+  // ============ 支付方式 - 减小内边距 ============
   Widget _buildPaymentSection(bool isDark) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -321,11 +329,11 @@ class _VipRechargePageState extends State<VipRechargePage> {
           const Text(
             '支付方式',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           ..._paymentMethods.map((method) => RadioListTile<String>(
             value: method['id'],
             groupValue: _selectedPayment,
@@ -337,7 +345,7 @@ class _VipRechargePageState extends State<VipRechargePage> {
             title: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: (method['color'] as Color).withOpacity(0.1),
                     shape: BoxShape.circle,
@@ -345,83 +353,75 @@ class _VipRechargePageState extends State<VipRechargePage> {
                   child: Icon(
                     method['icon'] as IconData,
                     color: method['color'] as Color,
-                    size: 20,
+                    size: 16,
                   ),
                 ),
-                const SizedBox(width: 12),
-                Text(method['name']),
+                const SizedBox(width: 8),
+                Text(method['name'], style: const TextStyle(fontSize: 13)),
               ],
             ),
             activeColor: const Color(0xFFFFA500),
+            contentPadding: EdgeInsets.zero,
+            visualDensity: VisualDensity.compact,
           )),
         ],
       ),
     );
   }
 
+  // ============ 支付按钮 ============
   Widget _buildPayButton(bool isDark) {
     final selectedPackage = _packages.firstWhere((p) => p.id == _selectedPackage);
     
-    return Container(
-      margin: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('实付：'),
-              Text(
-                '¥${selectedPackage.price}',
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFFFA500),
-                ),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('实付：', style: TextStyle(fontSize: 14)),
+            Text(
+              '¥${selectedPackage.price}',
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFFFA500),
               ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Container(
-            width: double.infinity,
-            height: 56,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
-              ),
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFFFFA500).withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: _handlePay,
-                borderRadius: BorderRadius.circular(16),
-                child: const Center(
-                  child: Text(
-                    '确认支付',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Container(
+          width: double.infinity,
+          height: 44,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: _handlePay,
+              borderRadius: BorderRadius.circular(8),
+              child: const Center(
+                child: Text(
+                  '确认支付',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   void _handlePay() {
-    // TODO: 调用支付API
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
