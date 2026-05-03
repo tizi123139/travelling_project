@@ -6,17 +6,15 @@ from fastapi import HTTPException
 
 class IntangibleService:
     @staticmethod
-    def get_intangible_list(db: Session, destination: str):
-        items = IntangibleDAO.get_intangible_list(db, destination)
+    def get_intangible_list(db: Session, region: str = None):
+        items = IntangibleDAO.get_intangible_list(db, region)
         if not items:
-            raise HTTPException(status_code=404, detail="未找到该目的地的非遗项目")
+            return []  # 空数据直接返回空列表，不再抛 404
 
         result = []
         for item in items:
-            # 处理多值字段（逗号分隔转列表）
             images = item.images.split(",") if item.images else []
             tags = item.tags.split(",") if item.tags else []
-
             result.append({
                 "id": item.id,
                 "name": item.name,
@@ -32,7 +30,7 @@ class IntangibleService:
                 "experience_contact": item.experience_contact,
                 "experience_price": item.experience_price,
                 "created_at": item.created_at.isoformat(),
-                "posts": []  # 暂时空，可后续扩展用户帖子功能
+                "posts": []
             })
         return result
 

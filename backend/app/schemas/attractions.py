@@ -5,9 +5,23 @@ from typing import Optional, List
 class ScenicListItem(BaseModel):
     scenicId: str
     name: str
+    nameEn: Optional[str] = None  # 新增：英文名称
     price: float
     score: float
     imgUrl1: str
+    rating: float
+    reviewCount: int
+    distance: str
+    address: str
+    addressEn: Optional[str] = None  # 新增：英文地址
+    type: str
+    tags: List[str]
+    tagsEn: Optional[List[str]] = None  # 新增：英文标签
+    priceLevel: str
+    latitude: float
+    longitude: float
+    introduction: str
+    introductionEn: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -16,11 +30,28 @@ class ScenicListItem(BaseModel):
 class ScenicDetail(BaseModel):
     scenicId: str
     name: str
+    nameEn: Optional[str] = None  # 新增：英文名称
     price: float
     openingTime: str
     introduction: str
-    traffic: List[str]  # 交通方式列表
-    ticketUrl: str
+    introductionEn: Optional[str] = None  # 新增：英文简介
+    traffic: List[str]
+    # 移除：ticketUrl 字段
+    # ticketUrl: str
+
+    # 原有新增字段
+    rating: float
+    reviewCount: int
+    address: str
+    addressEn: Optional[str] = None  # 新增：英文地址
+    category: str
+    latitude: float
+    longitude: float
+    tags: List[str]
+    tagsEn: Optional[List[str]] = None  # 新增：英文标签
+    type: str
+    priceLevel: str
+    distance: str
 
     class Config:
         from_attributes = True

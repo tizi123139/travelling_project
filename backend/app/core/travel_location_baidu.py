@@ -2,7 +2,7 @@ import requests
 from fastapi import HTTPException
 
 # 替换为你的百度地图AK
-BAIDU_MAP_AK = ""
+BAIDU_MAP_AK =
 BAIDU_BASE_URL = "https://api.map.baidu.com"
 
 

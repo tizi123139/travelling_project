@@ -1,17 +1,17 @@
-# 核心框架
+
 fastapi==0.109.0
 uvicorn==0.27.0
 
-# 数据库
+
 sqlalchemy==2.0.25
 pymysql==1.1.0
 cryptography==42.0.2
 
-# 安全与加密
+
 passlib[bcrypt]==1.7.4
 python-jose[cryptography]==3.3.0
 python-multipart==0.0.6
 
-# 数据验证与环境
+
 pydantic[email]==2.6.0
 python-dotenv==1.0.1

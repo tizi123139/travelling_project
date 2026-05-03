@@ -11,12 +11,11 @@ router = APIRouter()
 # 1. 获取热门景区列表（分页）
 @router.get("/hot", response_model=BaseResponse, summary="获取热门景区列表")
 def get_hot_scenic(
-    destination: str = Query(..., description="目的地城市，如：武汉"),
     pageNum: int = Query(1, ge=1, description="页码，默认1"),
     pageSize: int = Query(10, ge=1, description="每页条数，默认10"),
     db: Session = Depends(get_db)
 ):
-    data = ScenicService.get_scenic_list(db, destination, pageNum, pageSize)
+    data = ScenicService.get_scenic_list(db,  pageNum, pageSize)
     return BaseResponse(data=data)
 
 # 2. 获取景区详情

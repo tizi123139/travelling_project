@@ -5,11 +5,11 @@ from fastapi import HTTPException
 import os
 
 ALIYUN_OSS_CONFIG = {
-    "access_key_id": "",
-    "access_key_secret": "",
-    "endpoint": "oss-cn-beijing.aliyuncs.com",
-    "bucket_name": "",
-    "base_url": "https://.oss-cn-beijing.aliyuncs.com"
+    "access_key_id":
+    "access_key_secret":
+    "endpoint":
+    "bucket_name":
+    "base_url":
 }
 
 # 初始化OSS客户端
@@ -37,10 +37,12 @@ def upload_file_to_oss(file) -> str:
         raise HTTPException(status_code=400, detail="文件名称无效")
 
     file_ext = file_name.split(".")[-1].lower()
+    ext = f".{file_ext}"
     if f".{file_ext}" not in allowed_ext:
         raise HTTPException(status_code=400, detail="仅支持jpg/jpeg/png/gif格式图片")
 
     # 2. 校验文件大小（限制10MB）
+    file_content = file.file.read()
     if file.size > 10 * 1024 * 1024:
         raise HTTPException(status_code=400, detail="文件大小不能超过10MB")
 
@@ -49,18 +51,26 @@ def upload_file_to_oss(file) -> str:
     unique_file_name = f"{uuid.uuid4().hex}.{file_ext}"  # 唯一ID
     oss_file_key = f"photo_wall/{date_str}/{unique_file_name}"  # OSS中的存储路径
 
-    # 4. 上传文件到OSS
+    content_type_map = {
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".png": "image/png",
+        ".gif": "image/gif"
+    }
+    content_type = content_type_map[ext]
+
+    # 5. 上传文件到OSS（指定Content-Type + 公共读权限）
     try:
-        # 读取文件内容
-        file_content = file.file.read()
-        # 上传并设置公共读权限（用户可访问）
         bucket.put_object(
             key=oss_file_key,
             data=file_content,
-            headers={"x-oss-object-acl": "public-read"}  # 关键：设为公共读
+            headers={
+                "x-oss-object-acl": "public-read",  # 公共读权限
+                "Content-Type": content_type  # 关键：指定图片的MIME类型
+            }
         )
 
-        # 5. 返回公网访问URL
+        # 6. 返回公网访问URL
         return f"{ALIYUN_OSS_CONFIG['base_url']}/{oss_file_key}"
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"图片上传失败：{str(e)}")

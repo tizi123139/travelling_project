@@ -4,8 +4,8 @@ from typing import List, Optional
 
 class FoodDAO:
     @staticmethod
-    def get_food_list(db: Session, destination: str, type: Optional[str] = None) -> List[Food]:
-        query = db.query(Food).filter(Food.destination == destination)
+    def get_food_list(db: Session, type: Optional[str] = None) -> List[Food]:
+        query = db.query(Food)
         if type:
             query = query.filter(Food.type == type)
         return query.all()

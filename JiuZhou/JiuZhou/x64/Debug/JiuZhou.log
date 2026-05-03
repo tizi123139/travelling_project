@@ -1,4 +1,0 @@
-﻿  The vcpkg manifest was disabled, but we found a manifest file in C:\Users\Lenovo\source\repos\JiuZhou\JiuZhou\. You may want to enable vcpkg manifests in your properties page or pass /p:VcpkgEnableManifest=true to the msbuild invocation.
-  JiuZhou.vcxproj -> C:\Users\Lenovo\source\repos\JiuZhou\x64\Debug\JiuZhou.exe
-  'pwsh.exe' 不是内部或外部命令，也不是可运行的程序
-  或批处理文件。

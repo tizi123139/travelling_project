@@ -16,10 +16,20 @@ class HotelListRequest(BaseModel):
 class HotelListItem(BaseModel):
     hotelId: str
     name: str
+    name_en: str
+    image: str
+    images: List[str] = Field([], description="酒店图片列表")
+    rating: float
+    reviewCount: int
     address: str
+    address_en: str
     price: float
     star: str
-    distance: str
+    distance: float
+    facility: Optional[List[str]] = Field([], description="酒店设施列表")
+    facility_en: List[str] = Field([], description="设施列表（英文）")
+    tags: List[str] = Field([], description="标签列表（中文）")
+    tags_en: List[str] = Field([], description="标签列表（英文）")
 
     class Config:
         # 修复：orm_mode → from_attributes（Pydantic 2.x 标配）
@@ -30,10 +40,18 @@ class HotelDetailResponse(BaseModel):
     hotelId: str
     name: str
     address: str
+    address_en: str
     price: float
+    image: str
+    images: List[str] = Field([], description="酒店图片列表")
+    rating: float
+    reviewCount: int
     facility: List[str]  # 转成列表
+    facility_en: List[str]
     roomType: List[str]   # 转成列表
     commentScore: float
+    tags: List[str]
+    tags_en: List[str]
 
     class Config:
         from_attributes = True

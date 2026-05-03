@@ -1,3 +1,4 @@
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from app.models.hotel import Hotel,HotelBook
 from app.schemas.hotel import HotelBookRequest
@@ -18,7 +19,12 @@ class HotelDAO:
         """
         query = db.query(Hotel)
         # 基础筛选：目的地
-        query = query.filter(Hotel.address.like(f"%{destination}%"))
+        query = query.filter(
+            or_(
+                Hotel.address.like(f'%{destination}%'),
+                Hotel.name.like(f'%{destination}%')
+            )
+        )
         # 星级筛选
         if starLevel:
             query = query.filter(Hotel.star == starLevel)

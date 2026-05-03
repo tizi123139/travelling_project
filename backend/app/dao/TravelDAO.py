@@ -18,7 +18,8 @@ class TravelPlanDAO:
         itinerary_json: str,
         hotel_json: str,
         food_json: str,
-        tips: str
+        tips: str,
+        features: str = "",
     ) -> TravelPlan:
         """创建行程（捕获外键冲突异常）"""
         try:
@@ -33,7 +34,8 @@ class TravelPlanDAO:
                 itineraryJson=itinerary_json,
                 hotelJson=hotel_json,
                 foodJson=food_json,
-                tips=tips
+                tips=tips,
+                features=features
             )
             db.add(plan)
             db.commit()

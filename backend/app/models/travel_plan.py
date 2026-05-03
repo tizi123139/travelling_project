@@ -16,6 +16,7 @@ class TravelPlan(Base):
     hotelJson = Column(Text, comment="酒店推荐JSON")
     foodJson = Column(Text, comment="美食推荐JSON")
     tips = Column(Text, comment="旅行小贴士")
+    features = Column(Text, nullable=True, comment="路线亮点 JSON数组")
     createTime = Column(DateTime, default=datetime.datetime.now, comment="创建时间")
 
     __table_args__ = (

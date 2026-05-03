@@ -6,12 +6,11 @@ class ScenicDAO:
     @staticmethod
     def get_scenic_list(
         db: Session,
-        destination: str,
         pageNum: int = 1,
         pageSize: int = 10
     ) -> (List[Attractions], int):
         # 分页查询
-        query = db.query(Attractions).filter(Attractions.destination == destination)
+        query = db.query(Attractions)
         total = query.count()
         items = query.offset((pageNum - 1) * pageSize).limit(pageSize).all()
         return items, total

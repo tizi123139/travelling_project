@@ -2,9 +2,10 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from datetime import timedelta
 
+from app.core.sms_config import SmsService
 from app.models.user import User  # 你的SQLAlchemy模型
 from app.schemas.user import UserCreate, UserLogin, Token
-from app.core.security import verify_password, get_password_hash, create_access_token
+from app.core.security import verify_password, get_password_hash, create_access_token, pwd_context
 from app.core.security import ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import datetime
 
@@ -21,33 +22,32 @@ class UserService:
         return db.query(User).filter(User.email == email).first()
 
     @staticmethod
-    def create_user(db: Session, user_in: UserCreate):
-        """创建新用户（注册逻辑）"""
-        # 1. 校验用户名唯一性
-        if UserService.get_user_by_username(db, user_in.username):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"用户名 {user_in.username} 已注册"
-            )
+    def get_user_by_phone(db: Session, phone: str):
+        """新增：根据手机号查询用户"""
+        return db.query(User).filter(User.phone == phone).first()
 
-        # 2. 校验邮箱唯一性（如果传了邮箱）
-        if user_in.email and UserService.get_user_by_email(db, user_in.email):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"邮箱 {user_in.email} 已注册"
-            )
+    @staticmethod
+    def create_user(db: Session, user_in: UserCreate) -> User:
+        # 1. 密码加密（必做，否则会报错）
+        hashed_password = pwd_context.hash(user_in.password)
 
-        # 3. 加密密码 + 创建用户
-        hashed_password = get_password_hash(user_in.password)
+        # 2. 创建用户实例
         db_user = User(
             username=user_in.username,
-            email=user_in.email,
-            hashed_password=hashed_password
+            phone=user_in.phone,
+            hashed_password=hashed_password, # 存加密后的密码，不是明文
+            email=user_in.email
         )
+
+        # 3. 提交数据库
         db.add(db_user)
-        db.commit()
-        db.refresh(db_user)
-        return db_user
+        try:
+            db.commit()  # 提交可能失败（如手机号唯一索引冲突）
+            db.refresh(db_user)
+            return db_user
+        except Exception as e:
+            db.rollback()  # 失败回滚
+            raise Exception(f"数据库操作失败：{str(e)}")
 
     @staticmethod
     def authenticate_user(db: Session, user_in: UserLogin):

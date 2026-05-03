@@ -11,11 +11,10 @@ router = APIRouter()
 # 1. 获取目的地美食列
 @router.get("/list", response_model=BaseResponse, summary="获取目的地美食列表")
 def get_food_list(
-    destination: str = Query(..., description="目的地城市，如：武汉"),
     type: Optional[str] = Query(None, description="美食类型：小吃/正餐/甜品，默认全部"),
     db: Session = Depends(get_db)
 ):
-    data = FoodService.get_food_list(db, destination, type)
+    data = FoodService.get_food_list(db, type=type)
     return BaseResponse(data=data)  # data 是 List[FoodListItem]，自动序列化
 
 # 2. 获取美食详情

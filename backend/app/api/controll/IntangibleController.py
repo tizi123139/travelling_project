@@ -12,11 +12,14 @@ router = APIRouter()
 # 1. 获取目的地非遗列表
 @router.get("/list", response_model=BaseResponse, summary="获取目的地非遗列表")
 def get_intangible_list(
-    destination: str = Query(..., description="目的地城市，如：武汉"),
+    region: Optional[str] = Query(None, description="所属大区，如：华中，不传或传'全部'返回所有"),
     db: Session = Depends(get_db)
 ):
-    data = IntangibleService.get_intangible_list(db, destination)
-    return BaseResponse(data=data)
+    try:
+        data = IntangibleService.get_intangible_list(db, region=region)
+        return BaseResponse(data=data)
+    except Exception as e:
+        return BaseResponse(code=500, message=f"服务器错误：{str(e)}", data=[])
 
 # 2. 获取非遗详情
 @router.get("/detail", response_model=BaseResponse, summary="获取非遗详情")
