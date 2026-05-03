@@ -1,0 +1,16 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # 关闭一些过于严格的规则
+    todo: false
+    unused_field: false
+    unused_import: false
+    
+analyzer:
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+  errors:
+    todo: ignore
+    unused_import: ignore
